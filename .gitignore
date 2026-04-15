@@ -1,7 +1,7 @@
-/.venv/
-venv/
+**/.venv/
+**/venv/
 /.idea/
 .vscode/
-/.claude/
-/.containers/
+.claude/
+.containers/
 .other/
