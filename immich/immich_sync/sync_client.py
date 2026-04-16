@@ -29,7 +29,6 @@ class SyncClient:
     def _sync_users(self, api: CoreApi) -> None:
         """Main sync: check each Immich OIDC user against Authentik and revoke access if inactive."""
         users: list[dict[str, str]] = self.db.get_oauth_users()
-        print(users)
 
         for user in users:
             user_id: str = user["id"]
