@@ -51,7 +51,7 @@ The Authentik token needs the following permissions:
 - View applications the user has access to
 
 ### How it works
-Since Immich has no feature to disable accounts without marking them for deletion, this tool clears the sessions and api keys from the database for users that do not have access to Immich.
+Since Immich has no feature to disable accounts without marking them for deletion, this tool clears the sessions, shared links and api keys from the database for users that do not have access to Immich.
   
 This happens if one of the tree conditions are met:
 - The Authentik user does not exist
