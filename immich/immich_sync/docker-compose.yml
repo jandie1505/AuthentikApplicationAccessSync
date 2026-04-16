@@ -1,7 +1,8 @@
 # Add this service to the docker-compose.yml of immich:
 services:
   immich-authentik-sync:
-    #image: immich-authentik-sync:latest
+    image: immich-authentik-sync:latest
+    pull_policy: never # The image is not on docker hub, this is here to prevent spoofing attacks.
     depends_on:
       - database
     restart: unless-stopped
