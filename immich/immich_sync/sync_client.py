@@ -40,9 +40,10 @@ class SyncClient:
 
 
     def _sync_user(self, api: CoreApi, user_id: str, oauth_id: str) -> None:
+        """Synchronizes a single user."""
         ak_user: authentik_client.User | None = immich_sync.authentik_tools.get_user(api=api, sub_claim_type=self.sub_claim_type, sub=oauth_id)
         if not isinstance(ak_user, authentik_client.User):
-            print(f"User {user_id} with oauthId {oauth_id} not found in authentik, skipping")
+            self._remove_user_access(user_id, oauth_id, False, None, None)
             return
 
         is_active: bool | None = ak_user.is_active
@@ -60,7 +61,12 @@ class SyncClient:
         if is_active and has_access:
             return
 
-        print(f"Revoking access for {user_id} (sub={oauth_id}) (is_active={is_active}, has_access={has_access})")
+        self._remove_user_access(user_id, oauth_id, True, is_active, has_access)
+
+
+    def _remove_user_access(self, user_id: str, oauth_id: str, exist: bool, is_active: bool | None, has_access: bool | None) -> None:
+        """Removes a single user."""
+        print(f"Revoking access for {user_id} (sub={oauth_id}) (exist={exist}, is_active={is_active}, has_access={has_access})")
         sessions_deleted: int = self.db.delete_sessions(user_id)
         keys_deleted: int = self.db.delete_api_keys(user_id)
         print(f"  Deleted {sessions_deleted} session(s) and {keys_deleted} API key(s)")
