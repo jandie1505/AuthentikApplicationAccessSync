@@ -68,4 +68,5 @@ class SyncClient:
         print(f"Revoking access for {user_id} (sub={oauth_id}) (exist={exist}, is_active={is_active}, has_access={has_access})")
         sessions_deleted: int = self.db.delete_sessions(user_id)
         keys_deleted: int = self.db.delete_api_keys(user_id)
-        print(f"  Deleted {sessions_deleted} session(s) and {keys_deleted} API key(s)")
+        shared_links_deleted: int = self.db.delete_shared_links(user_id)
+        print(f"  Deleted {sessions_deleted} session(s), {keys_deleted} API key(s) and {shared_links_deleted} shared link(s)")

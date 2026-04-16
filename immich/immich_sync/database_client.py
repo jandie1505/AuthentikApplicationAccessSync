@@ -30,3 +30,11 @@ class DatabaseClient:
                 cur.execute('DELETE FROM "api_key" WHERE "userId" = %s', (user_id,))
                 conn.commit()
                 return cur.rowcount
+
+    def delete_shared_links(self, user_id: str) -> int:
+        """Delete all shared links for a user. Returns number of deleted rows."""
+        with psycopg2.connect(self.dsn) as conn:
+            with conn.cursor() as cur:
+                cur.execute('DELETE FROM "shared_link" WHERE "userId" = %s', (user_id,))
+                conn.commit()
+                return cur.rowcount
