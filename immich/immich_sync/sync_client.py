@@ -35,7 +35,6 @@ class SyncClient:
             user_id: str = user["id"]
             oauth_id: str = user["oauthId"]
 
-            print(user_id, oauth_id)
             self._sync_user(api, user_id, oauth_id)
 
 

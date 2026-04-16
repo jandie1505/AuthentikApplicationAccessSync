@@ -1,0 +1,14 @@
+# Add this service to the docker-compose.yml of immich:
+services:
+  immich-authentik-sync:
+    #image: immich-authentik-sync:latest
+    depends_on:
+      - database
+    restart: unless-stopped
+    environment:
+      IMMICH_DB_DSN: "postgresql://${DB_USERNAME}:${DB_PASSWORD}@database:5432/${DB_DATABASE_NAME}"
+      AUTHENTIK_URL: ${AUTHENTIK_URL:?AUTHENTIK_URL is not set}
+      AUTHENTIK_TOKEN: ${AUTHENTIK_TOKEN:?AUTHENTIK_TOKEN is not set}
+      AUTHENTIK_APPLICATION_SLUG: ${AUTHENTIK_APPLICATION_SLUG:?AUTHENTIK_APPLICATION_SLUG is not set}
+      AUTHENTIK_SUB_CLAIM: ${AUTHENTIK_SUB_CLAIM:?AUTHENTIK_SUB_CLAIM is not set}
+      SYNC_CRON: ${SYNC_CRON:?SYNC_CRON is not set}
