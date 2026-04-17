@@ -1,7 +1,23 @@
+# Python
 **/.venv/
 **/venv/
+
+# C#/.NET
+**/bin/
+**/obj/
+
+# NuGet
+*.nupkg
+*.snupkg
+
+# IDEs
 /.idea/
 .vscode/
+.vs/
+*.user
+*.suo
+
+# Other
 .claude/
 .containers/
 .other/
