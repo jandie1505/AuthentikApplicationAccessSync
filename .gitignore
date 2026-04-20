@@ -5,6 +5,7 @@
 # C#/.NET
 **/bin/
 **/obj/
+jellyfin/.dependencies/
 
 # NuGet
 *.nupkg

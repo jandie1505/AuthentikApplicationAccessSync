@@ -7,14 +7,14 @@ namespace AuthentikJellyfinSync;
 
 public class AuthentikJellyfinSync : BasePlugin<PluginConfiguration>
 {
+    public override string Name => "AuthentikJellyfinSync";
+    public override Guid Id => Guid.Parse("2da33357-06b7-4f2f-8c8e-7d3fce5bf03c");
 
     public AuthentikJellyfinSync(IApplicationPaths applicationPaths, IXmlSerializer xmlSerializer) : base(applicationPaths, xmlSerializer)
     {
-        
+        Instance = this;
     }
     
-    public override string Name => throw new System.NotImplementedException();
-    
-    public override Guid Id => Guid.Parse("");
+    public static AuthentikJellyfinSync? Instance { get; private set; }
     
 }

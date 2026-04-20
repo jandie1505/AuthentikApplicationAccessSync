@@ -13,6 +13,9 @@
     <PackageReference Include="Jellyfin.Model" Version="10.11.8">
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
+    <Reference Include="Authentik.Client">
+      <HintPath>../.dependencies/Authentik.Client.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
