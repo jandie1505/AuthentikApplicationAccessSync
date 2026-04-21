@@ -40,8 +40,6 @@ public class ProviderSyncClient
             AccessToken = _providerConfig.AuthentikApiToken
         };
         
-        _logger.LogInformation("Connecting to {url}... {token}", config.BasePath, config.AccessToken);
-        
         using var httpClient = new HttpClient();
         using var httpClientHandler = new HttpClientHandler();
             

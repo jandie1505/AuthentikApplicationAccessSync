@@ -10,10 +10,9 @@ public class ProviderConfig
     public string AuthentikApiUrl { get; set; } = string.Empty;
     public string AuthentikApiToken { get; set; } = string.Empty;
     public UserIdentifierType UserIdentifierType { get; set; } = UserIdentifierType.Pk;
-    public string CustomSubClaim { get; set; } = string.Empty;
     public string ApplicationSlug { get; set; } = string.Empty;
     public bool ReEnableAccount { get; set; } = true;
-    public bool AutoSyncEnabled { get; set; } = false;
+    public bool SyncEnabled { get; set; } = false;
 }
 
 public enum UserIdentifierType
@@ -21,6 +20,5 @@ public enum UserIdentifierType
     Pk,
     Uuid,
     Email,
-    Username,
-    Custom
+    Username
 }

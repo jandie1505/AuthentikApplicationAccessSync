@@ -44,6 +44,7 @@ public class SyncTask : IScheduledTask
             {
                 var providerConfig = cfg.ProviderConfigs.FirstOrDefault(p => p.Id == id);
                 if (providerConfig == null) continue;
+                if (!providerConfig.SyncEnabled) continue;
 
                 var syncClient = new ProviderSyncClient(providerConfig, oidConfig, _userManager, _logger);
                 tasks.Add(syncClient.SyncUsers());
