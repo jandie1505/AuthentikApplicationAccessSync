@@ -8,6 +8,9 @@ using Microsoft.Extensions.Logging;
 
 namespace AuthentikJellyfinSync.Sync;
 
+/// <summary>
+/// Updates the active status of Jellyfin users to the Authentik user active status and application access.
+/// </summary>
 public class ProviderSyncClient
 {
     private readonly ProviderConfig _providerConfig;
@@ -24,6 +27,9 @@ public class ProviderSyncClient
         _logger = logger;
     }
 
+    /// <summary>
+    /// Updates the active status of all Jellyfin users from this provider to the Authentik user active status and application access.
+    /// </summary>
     public async Task SyncUsers()
     {
         var config = new Authentik.Client.Client.Configuration
@@ -50,11 +56,20 @@ public class ProviderSyncClient
         }
     }
 
+    /// <summary>
+    /// Updates the active status of the specified Jellyfin user from this provider to the Authentik user active status and application access.<br/>
+    /// The Jellyfin user will be disabled, when the Authentik account does not exist, is disabled, it does not have access to the specified application or (when enabled) does not pass the SSO-Auth plugin role claims.<br/>
+    /// The Jellyfin user will be enabled, when none of the conditions above is true, and the config option ReEnableAccount is enabled.
+    /// </summary>
+    /// <param name="api">The Authentik CoreAPI object.</param>
+    /// <param name="jellyfinUserId">The Jellyfin user id.</param>
+    /// <param name="oauthUserId">The linked Oauth User Identifier from the SSO-Auth plugin.</param>
     private async Task SyncUser(CoreApi api, Guid jellyfinUserId, string oauthUserId)
     {
         var jellyfinUser = _userManager.GetUserById(jellyfinUserId);
         if (jellyfinUser == null) return;
         
+        // Disable account if user does not exist.
         var authentikUser = UserUtilities.GetUser(api, _providerConfig.UserIdentifierType, oauthUserId);
         if (authentikUser == null)
         {
@@ -62,6 +77,7 @@ public class ProviderSyncClient
             return;
         }
 
+        // Disable account if user is not active.
         if (!authentikUser.IsActive)
         {
             await SetUserEnabledStatus(jellyfinUser, false);
@@ -71,17 +87,24 @@ public class ProviderSyncClient
         bool hasRoleClaimAccess = HasRoleClaimAccess(authentikUser);
         bool authentikUserHasAccess = await HasApplicationAccess(api, authentikUser);
 
+        // Disable user if the user has no access to the application.
         if (!hasRoleClaimAccess || !authentikUserHasAccess)
         {
             await SetUserEnabledStatus(jellyfinUser, false);
             return;
         }
 
+        // Re-enable account when enabled.
         if (!_providerConfig.ReEnableAccount) return;
         
         await SetUserEnabledStatus(jellyfinUser, true);
     }
     
+    /// <summary>
+    /// Sets the Jellyfin user enabled status, when the new status is different from the current status.
+    /// </summary>
+    /// <param name="user">The Jellyfin user.</param>
+    /// <param name="enabled">Enable/Disable the user.</param>
     private async Task SetUserEnabledStatus(User user, bool enabled)
     {
         bool jellyfinUserEnabled = !user.HasPermission(PermissionKind.IsDisabled);
@@ -91,6 +114,12 @@ public class ProviderSyncClient
         await _userManager.UpdateUserAsync(user);
     }
 
+    /// <summary>
+    /// Check if the user has access using a role claim check.<br/>
+    /// This is the case if either the user is in any group specified in the role claim of the SSO plugin or the role claim is disabled.
+    /// </summary>
+    /// <param name="authentikUser">The Authentik user.</param>
+    /// <returns>if the user has access.</returns>
     private bool HasRoleClaimAccess(Authentik.Client.Model.User authentikUser)
     {
         if (_oidConfig.Roles.Length <= 0) return true; // If no roles are set, the role check is disabled.
@@ -109,6 +138,12 @@ public class ProviderSyncClient
         return false;
     }
 
+    /// <summary>
+    /// Ask Authentik if a user has access to this application.
+    /// </summary>
+    /// <param name="api">The CoreAPI object.</param>
+    /// <param name="authentikUser">The Authentik user to check for.</param>
+    /// <returns>If the user has access to the application.</returns>
     private async Task<bool> HasApplicationAccess(CoreApi api, Authentik.Client.Model.User authentikUser)
     {
         var applicationList = await api.CoreApplicationsListAsync(forUser: authentikUser.Pk, slug: _providerConfig.ApplicationSlug);
@@ -121,25 +156,6 @@ public class ProviderSyncClient
         }
 
         return false;
-    }
-
-    public static async Task SyncTask(IUserManager _userManager, ILogger _logger)
-    {
-        var cfg = AuthentikJellyfinSync.Instance!.Configuration;
-
-        var oidConfigs = SsoAuthReflection.GetOidConfigs();
-
-        var tasks = new List<Task>();
-        foreach (var (id, oidConfig) in oidConfigs)
-        {
-            var providerConfig = cfg.ProviderConfigs.FirstOrDefault(p => p.Id == id);
-            if (providerConfig == null) continue;
-
-            var syncClient = new ProviderSyncClient(providerConfig, oidConfig, _userManager, _logger);
-            tasks.Add(syncClient.SyncUsers());
-        }
-
-        await Task.WhenAll(tasks);
     }
 
 }
