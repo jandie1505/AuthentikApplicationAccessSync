@@ -116,7 +116,7 @@ public class ProviderSyncClient
         
         user.SetPermission(PermissionKind.IsDisabled, !enabled);
         await _userManager.UpdateUserAsync(user);
-        _logger.LogInformation("Updated user {user_id} (name={name} to enabled={enabled}", user.Id.ToString(), user.Username, enabled);
+        _logger.LogInformation("Updated user {user_id} (name={name} to enabled={enabled})", user.Id.ToString(), user.Username, enabled);
     }
 
     /// <summary>
