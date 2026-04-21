@@ -32,17 +32,21 @@ public class ProviderSyncClient
     /// </summary>
     public async Task SyncUsers()
     {
+        _logger.LogInformation("Syncing provider {id}...", _providerConfig.Id);
+        
         var config = new Authentik.Client.Client.Configuration
         {
-            BasePath = _providerConfig.AuthentikApiUrl,
+            BasePath = _providerConfig.AuthentikApiUrl.TrimEnd('/'),
             AccessToken = _providerConfig.AuthentikApiToken
         };
+        
+        _logger.LogInformation("Connecting to {url}... {token}", config.BasePath, config.AccessToken);
         
         using var httpClient = new HttpClient();
         using var httpClientHandler = new HttpClientHandler();
             
         var coreApi = new CoreApi(httpClient, config, httpClientHandler);
-                    
+        
         foreach ((var oauthId, var userId) in _oidConfig.CanonicalLinks)
         {
             try
@@ -54,6 +58,8 @@ public class ProviderSyncClient
                 _logger.LogWarning(e, "Failed to sync user {UserId} (oauthId={OauthId})", userId, oauthId);
             }
         }
+        
+        _logger.LogInformation("Finished sync of provider {id}", _providerConfig.Id);
     }
 
     /// <summary>
@@ -112,6 +118,7 @@ public class ProviderSyncClient
         
         user.SetPermission(PermissionKind.IsDisabled, !enabled);
         await _userManager.UpdateUserAsync(user);
+        _logger.LogInformation("Updated user {user_id} (name={name} to enabled={enabled}", user.Id.ToString(), user.Username, enabled);
     }
 
     /// <summary>

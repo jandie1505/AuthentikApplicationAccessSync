@@ -36,6 +36,7 @@ public class SyncTask : IScheduledTask
                 return;
             }
 
+            _logger.LogInformation("Starting sync...");
             var oidConfigs = SsoAuthReflection.GetOidConfigs();
 
             var tasks = new List<Task>();
@@ -49,6 +50,7 @@ public class SyncTask : IScheduledTask
             }
             
             await Task.WhenAll(tasks);
+            _logger.LogInformation("Sync finished.");
             progress.Report(100);
         }
         finally
