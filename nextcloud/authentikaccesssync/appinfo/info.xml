@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<info xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	  xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
+	<id>authentikaccesssync</id>
+	<name>Authentik Access Sync</name>
+	<summary>Enables/disables nextcloud accounts based on the Authentik account activation status and application access for the user.</summary>
+	<description>Enables/disables nextcloud accounts based on the Authentik account activation status and application access for the user.</description>
+	<version>1.0.0</version>
+	<licence>AGPL-3.0-or-later</licence>
+	<author mail="mo3u2xbvt@mozmail.com" homepage="https://jandie1505.net">jandie1505</author>
+	<namespace>AuthentikAccessSync</namespace>
+	<category>security</category>
+	<bugs>https://github.com/jandie1505/AuthentikApplicationAccessSync/issues</bugs>
+	<dependencies>
+		<nextcloud min-version="31" max-version="32"/>
+	</dependencies>
+</info>

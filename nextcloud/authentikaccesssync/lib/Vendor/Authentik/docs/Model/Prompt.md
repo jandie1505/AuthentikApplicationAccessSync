@@ -1,0 +1,21 @@
+# Prompt
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**pk** | **string** |  | [readonly]
+**name** | **string** |  |
+**field_key** | **string** | Name of the form field, also used to store the value |
+**label** | **string** |  |
+**type** | [**\OCA\AuthentikAccessSync\Vendor\Authentik\Model\PromptTypeEnum**](PromptTypeEnum.md) |  |
+**required** | **bool** |  | [optional]
+**placeholder** | **string** | Optionally provide a short hint that describes the expected input value. When creating a fixed choice field, enable interpreting as expression and return a list to return multiple choices. | [optional]
+**initial_value** | **string** | Optionally pre-fill the input with an initial value. When creating a fixed choice field, enable interpreting as expression and return a list to return multiple default choices. | [optional]
+**order** | **int** |  | [optional]
+**prompt_stages_obj** | [**\OCA\AuthentikAccessSync\Vendor\Authentik\Model\PromptStage[]**](PromptStage.md) |  | [readonly]
+**sub_text** | **string** |  | [optional]
+**placeholder_expression** | **bool** |  | [optional]
+**initial_value_expression** | **bool** |  | [optional]
+
+[[Back to Model list]](../../README.md#models) [[Back to API list]](../../README.md#endpoints) [[Back to README]](../../README.md)
