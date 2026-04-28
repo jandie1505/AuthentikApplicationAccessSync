@@ -24,10 +24,12 @@ class SettingsController extends Controller {
         string $authentik_token,
         string $application_slug,
         string $subject_mode,
+        string $user_id_mode,
     ): DataResponse {
         $this->appConfig->setValueString(self::APP_ID, 'authentik_url', $authentik_url);
         $this->appConfig->setValueString(self::APP_ID, 'application_slug', $application_slug);
         $this->appConfig->setValueString(self::APP_ID, 'subject_mode', $subject_mode);
+        $this->appConfig->setValueString(self::APP_ID, 'user_id_mode', $user_id_mode);
 
         if ($authentik_token !== '') {
             $this->appConfig->setValueString(self::APP_ID, 'authentik_token', $authentik_token, lazy: false, sensitive: true);

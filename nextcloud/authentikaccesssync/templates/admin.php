@@ -27,16 +27,40 @@
                    value="<?php p($_['application_slug']); ?>">
         </p>
 
-        <p>
-            <label for="subject_mode"><?php p($l->t('Subject mode')); ?></label>
-            <select id="subject_mode" name="subject_mode">
-                <?php foreach (['uuid', 'pk', 'username', 'email'] as $m): ?>
-                    <option value="<?php p($m); ?>" <?php if ($_['subject_mode'] === $m) p('selected'); ?>>
-                        <?php p($m); ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        </p>
+        <fieldset style="margin-top: 1em; padding: 0.5em 0; border: none; border-top: 1px solid var(--color-border);">
+            <h3><?php p($l->t('User Identification Settings')); ?></h3>
+            <p>The following settings <b>MUST</b> match with the settings in the OpenID Connect user backend plugin.</p>
+
+            <p>
+                <label for="subject_mode"><?php p($l->t('Subject mode')); ?></label>
+                <select id="subject_mode" name="subject_mode">
+                    <?php foreach (['pk', 'uuid', 'hashed_pk_uuid', 'username', 'email'] as $m): ?>
+                        <option value="<?php p($m); ?>" <?php if ($_['subject_mode'] === $m) p('selected'); ?>>
+                            <?php p($m); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <br>
+                <small><?php p($l->t('Selects which field in Authentik is used as sub-claim. Please note that the option User-ID Mapping in the OIDC plugin <b>MUST</b> be set to sub.')); ?></small>
+            </p>
+
+            <p>
+                <label for="user_id_mode"><?php p($l->t('User ID Mode')); ?></label>
+                <select id="user_id_mode" name="user_id_mode">
+                    <?php foreach ([
+                        'unique' => $l->t('Use unique user ID'),
+                        'prefixed' => $l->t('Use provider identifier as prefix'),
+                        'off' => $l->t('Aus'),
+                    ] as $value => $label): ?>
+                        <option value="<?php p($value); ?>" <?php if ($_['user_id_mode'] === $value) p('selected'); ?>>
+                            <?php p($label); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <br>
+                <small><?php p($l->t('Controls how the Nextcloud User ID is created from the sub claim. You need to set this option according to the options in the OpenID Connect user backend plugin.')); ?></small>
+            </p>
+        </fieldset>
 
         <button type="submit"><?php p($l->t('Save')); ?></button>
     </form>
