@@ -14,4 +14,8 @@
 	<dependencies>
 		<nextcloud min-version="31" max-version="32"/>
 	</dependencies>
+	<settings>
+		<admin>OCA\AuthentikAccessSync\Settings\Admin</admin>
+		<admin-section>OCA\AuthentikAccessSync\Settings\AdminSection</admin-section>
+	</settings>
 </info>

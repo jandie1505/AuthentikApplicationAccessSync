@@ -12,7 +12,8 @@
 	"autoload": {
 		"psr-4": {
 			"OCA\\AuthentikAccessSync\\": "lib/"
-		}
+		},
+		"exclude-from-classmap": ["lib/Vendor/"]
 	},
 	"scripts": {
 		"post-install-cmd": [
