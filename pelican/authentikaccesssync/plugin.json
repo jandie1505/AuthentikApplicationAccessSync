@@ -1,0 +1,16 @@
+{
+    "id": "authentikaccesssync",
+    "name": "AuthentikAccessSync",
+    "author": "jandie1505",
+    "version": "1.0.0",
+    "description": "Synchronizes the account enabled state of Authentik users with Authentik and marks Authentik users as external.",
+    "category": "plugin",
+    "url": null,
+    "update_url": null,
+    "namespace": "Jandie1505\\AuthentikAccessSync",
+    "class": "AuthentikAccessSyncPlugin",
+    "panels": null,
+    "panel_version": null,
+    "api_version": 1,
+    "composer_packages": null
+}
