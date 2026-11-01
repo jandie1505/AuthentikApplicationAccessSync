@@ -129,3 +129,29 @@ This plugin is only using read requests for the Authentik API. But for security,
   
 I am not responsible for broken Jellyfin or Authentik servers, use at your own Risk.
 If you are unsure, check the source code.
+
+## Pelican
+
+### Installation
+
+1. Copy the `authentikaccesssync/` directory into `/var/www/html/plugins` of your pelican installation.  If you are using the docker image, you need to create a volume for the plugins directory, since there is none by default.
+2. Go to Admin Settings --> Plugins and install and enable the plugin.
+
+### How it works
+
+#### Sync
+
+Work in progress... The current plugin does not sync the account enabled state with Authentik.
+  
+There are some challenges since pelican currently does not have an option for disabling users.
+
+#### Protections
+
+When a user registers using Authentik or links their account after registration, the user is automatically marked as externally managed ("Is externally managed?" in user settings).  
+This prevents them from changing their username, email or password.  
+Admins can change the "Is externally managed?" option later, it will not be re-applied automatically.
+
+If a user is marked as externally managed and is linked to Authentik, the plugin does the following:
+- Prevent the user from unlinking their account from Authentik.
+- Prevent the user from logging in using other authentication methods (password, passkey).
+- Prevent the user from adding new passkeys.
